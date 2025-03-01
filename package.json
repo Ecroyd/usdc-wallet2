@@ -1,0 +1,40 @@
+{
+  "name": "my-hardhat-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@types/react": "19.0.10",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.18"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.7",
+    "next": "^15.2.0",
+    "postcss": "^8.5.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ecroyd/usdc-wallet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ecroyd/usdc-wallet/issues"
+  },
+  "homepage": "https://github.com/Ecroyd/usdc-wallet#readme"
+}
