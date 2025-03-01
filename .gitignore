@@ -1,8 +1,0 @@
-# Ignore dependencies & build folders
-node_modules/
-.next/
-dist/
-
-# Ignore local environment files
-.env
-.env.local
