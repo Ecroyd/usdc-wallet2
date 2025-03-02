@@ -129,47 +129,51 @@ export default function USDCWallet() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="p-4 max-w-md text-center">
-        <div className="text-center mb-4">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
-            alt="Alfie the T-Rex"
-            className="w-55 h-50 mx-auto rounded-full"
-            style={{ width: '550px', height: '500px' }}
-          />
-          <h2 className="text-xl font-bold mt-2">{visibleName}</h2>
-          <p className="text-sm text-gray-600">Your friendly cash guardian!</p>
-        </div>
-
-        <h1 className="text-xl font-bold mb-4">USDC Wallet (Sepolia Testnet)</h1>
-        {message && <p className="text-red-500 mb-2">{message}</p>}
+      <div className="container">
+        <h1>USDC Wallet</h1>
+        <p>Manage your USDC on Sepolia Testnet</p>
 
         {!connectedAddress ? (
-          <button className="bg-blue-500 text-white p-2 w-full hover:bg-blue-600 mb-4" onClick={connectMetaMask}>
+          <button className="primary" onClick={connectMetaMask}>
             Connect MetaMask
           </button>
         ) : (
           <>
-            <p className="mb-4 text-gray-700">Connected Address: <span className="font-mono">{connectedAddress}</span></p>
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-2">Your USDC Balance</h2>
-              {balance !== null ? (
-                <p className="text-green-600">{balance} USDC</p>
-              ) : (
-                <p className="text-gray-500">Loading balance...</p>
-              )}
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Send USDC</h2>
-              <input className="border p-2 w-full mb-2" placeholder="Enter Recipient Address" value={recipient} onChange={e => setRecipient(e.target.value)} />
-              <input className="border p-2 w-full mb-2" placeholder="Enter Amount (e.g., 10.0)" value={amount} onChange={e => setAmount(e.target.value)} />
-              <button className="bg-green-500 text-white p-2 w-full hover:bg-green-600" onClick={sendUSDC} disabled={loading}>
-                {loading ? "Sending..." : "Send USDC"}
-              </button>
-            </div>
-            <button className="bg-red-500 text-white p-2 w-full hover:bg-red-600 mt-4" onClick={disconnectMetaMask}>
+            <button className="secondary" onClick={disconnectMetaMask}>
               Disconnect Wallet
             </button>
+            <div className="p-4 max-w-md text-center">
+              <div className="text-center mb-4">
+              <img
+  src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
+  alt="Alfie the T-Rex"
+  className="dino-image"
+/>
+                <h2 className="text-xl font-bold mt-2">{visibleName}</h2>
+                <p className="text-sm text-gray-600">Your friendly cash guardian!</p>
+              </div>
+
+              <h1 className="text-xl font-bold mb-4">USDC Wallet (Sepolia Testnet)</h1>
+              {message && <p className="text-red-500 mb-2">{message}</p>}
+
+              <p className="mb-4 text-gray-700">Connected Address: <span className="font-mono">{connectedAddress}</span></p>
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold mb-2">Your USDC Balance</h2>
+                {balance !== null ? (
+                  <p className="text-green-600">{balance} USDC</p>
+                ) : (
+                  <p className="text-gray-500">Loading balance...</p>
+                )}
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold mb-2">Send USDC</h2>
+                <input className="border p-2 w-full mb-2" placeholder="Enter Recipient Address" value={recipient} onChange={e => setRecipient(e.target.value)} />
+                <input className="border p-2 w-full mb-2" placeholder="Enter Amount (e.g., 10.0)" value={amount} onChange={e => setAmount(e.target.value)} />
+                <button className="bg-green-500 text-white p-2 w-full hover:bg-green-600" onClick={sendUSDC} disabled={loading}>
+                  {loading ? "Sending..." : "Send USDC"}
+                </button>
+              </div>
+            </div>
           </>
         )}
       </div>

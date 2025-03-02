@@ -1,0 +1,67 @@
+/* styles/global.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa; /* Light background */
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    text-align: center;
+    padding: 20px;
+    max-width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button.primary {
+    background: #007bff;
+    color: white;
+  }
+  
+  button.primary:hover {
+    background: #0056b3;
+  }
+  
+  button.secondary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  button.secondary:hover {
+    background: #a71d2a;
+  }
+  .dino-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    width: 60%; /* Adjust width percentage for better scaling */
+  }
+  
+  @media (max-width: 768px) {
+    .dino-image {
+      width: 80%; /* On smaller screens, make it take more space */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dino-image {
+      width: 100%; /* On very small screens, make it fully responsive */
+    }
+  }
+  
