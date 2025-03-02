@@ -74,20 +74,28 @@ export default function USDCWallet() {
   }
 
   async function connectMetaMask() {
+    if (!window.ethereum) {
+      alert("MetaMask is not installed. Please install MetaMask and try again.");
+      return;
+    }
+
     try {
       setMessage("Connecting wallet...");
+      
       const provider = new ethers.BrowserProvider(window.ethereum);
       const accounts = await provider.send("eth_requestAccounts", []);
-      if (accounts.length === 0) {
+      
+      if (!accounts.length) {
         setMessage("No accounts found. Please connect your wallet.");
         return;
       }
+
       setConnectedAddress(accounts[0]);
       fetchBalance(accounts[0]);
       setMessage("Wallet connected successfully.");
     } catch (error) {
-      console.error("Failed to connect MetaMask", error);
-      setMessage("Failed to connect MetaMask. Please try again.");
+      console.error("MetaMask connection failed", error);
+      setMessage("Failed to connect MetaMask. Ensure pop-ups are allowed in Safari.");
     }
   }
 
@@ -144,11 +152,12 @@ export default function USDCWallet() {
             </button>
             <div className="p-4 max-w-md text-center">
               <div className="text-center mb-4">
-              <img
-  src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
-  alt="Alfie the T-Rex"
-  className="dino-image"
-/>
+                <img
+                  src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
+                  alt="Alfie the T-Rex"
+                  className="w-55 h-50 mx-auto rounded-full"
+                  style={{ width: '550px', height: '500px' }}
+                />
                 <h2 className="text-xl font-bold mt-2">{visibleName}</h2>
                 <p className="text-sm text-gray-600">Your friendly cash guardian!</p>
               </div>
