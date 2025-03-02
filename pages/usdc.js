@@ -75,37 +75,46 @@ export default function USDCWallet() {
 
   async function connectMetaMask() {
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-
+  
     if (isIOS) {
-      // Redirect iOS users to the MetaMask mobile app
-      window.location.href = "https://metamask.app.link/dapp/" + window.location.href;
-      return;
+      // If MetaMask is NOT open yet, redirect to MetaMask app
+      if (!window.ethereum) {
+        window.location.href = "https://metamask.app.link/dapp/" + window.location.href;
+        return;
+      }
     }
-
+  
     if (!window.ethereum) {
       alert("MetaMask is not installed. Please install MetaMask and try again.");
       return;
     }
-
+  
     try {
       setMessage("Connecting wallet...");
-      
+  
       const provider = new ethers.BrowserProvider(window.ethereum);
       const accounts = await provider.send("eth_requestAccounts", []);
-
+  
       if (!accounts.length) {
         setMessage("No accounts found. Please connect your wallet.");
         return;
       }
-
+  
       setConnectedAddress(accounts[0]);
       fetchBalance(accounts[0]);
       setMessage("Wallet connected successfully.");
     } catch (error) {
       console.error("MetaMask connection failed", error);
-      setMessage("Failed to connect MetaMask. Ensure pop-ups are allowed in Safari.");
+  
+      // Special message for iOS users inside MetaMask's browser
+      if (isIOS) {
+        setMessage("If you're in the MetaMask browser, tap the wallet icon in the bottom menu to connect.");
+      } else {
+        setMessage("Failed to connect MetaMask. Please ensure pop-ups are allowed.");
+      }
     }
   }
+  
 
   function disconnectMetaMask() {
     setConnectedAddress(null);
