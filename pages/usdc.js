@@ -40,11 +40,11 @@ export default function USDCWallet() {
 
   useEffect(() => {
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
       }
     };
   }, []);
@@ -62,7 +62,9 @@ export default function USDCWallet() {
   async function fetchBalance(address) {
     try {
       setMessage("Fetching balance...");
-      const provider = new ethers.JsonRpcProvider(`https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`);
+      const provider = new ethers.JsonRpcProvider(
+        `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+      );
       const contract = new ethers.Contract(usdcAddress, usdcAbi, provider);
       const balance = await contract.balanceOf(address);
       setBalance(ethers.formatUnits(balance, 6));
@@ -75,38 +77,37 @@ export default function USDCWallet() {
 
   async function connectMetaMask() {
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-  
+
     if (isIOS) {
-      // If MetaMask is NOT open yet, redirect to MetaMask app
       if (!window.ethereum) {
-        window.location.href = "https://metamask.app.link/dapp/" + window.location.href;
+        setMessage("Opening in MetaMask...");
+        setTimeout(() => {
+          window.location.href = "https://metamask.app.link/dapp/" + window.location.href;
+        }, 2000);
         return;
       }
     }
-  
+
     if (!window.ethereum) {
       alert("MetaMask is not installed. Please install MetaMask and try again.");
       return;
     }
-  
+
     try {
       setMessage("Connecting wallet...");
-  
       const provider = new ethers.BrowserProvider(window.ethereum);
       const accounts = await provider.send("eth_requestAccounts", []);
-  
+
       if (!accounts.length) {
         setMessage("No accounts found. Please connect your wallet.");
         return;
       }
-  
+
       setConnectedAddress(accounts[0]);
       fetchBalance(accounts[0]);
       setMessage("Wallet connected successfully.");
     } catch (error) {
       console.error("MetaMask connection failed", error);
-  
-      // Special message for iOS users inside MetaMask's browser
       if (isIOS) {
         setMessage("If you're in the MetaMask browser, tap the wallet icon in the bottom menu to connect.");
       } else {
@@ -114,7 +115,6 @@ export default function USDCWallet() {
       }
     }
   }
-  
 
   function disconnectMetaMask() {
     setConnectedAddress(null);
@@ -153,53 +153,48 @@ export default function USDCWallet() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="container">
-        <h1>USDC Wallet</h1>
-        <p>Manage your USDC on Sepolia Testnet</p>
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div className="container text-center p-6 bg-white shadow-lg rounded-lg max-w-md">
+        <h1 className="text-xl font-bold">USDC Wallet</h1>
+        <p className="text-sm text-gray-600">Manage your USDC on Sepolia Testnet</p>
+
+        <div className="my-4">
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
+            alt="Alfie the T-Rex"
+            className="rounded-lg mx-auto w-full max-w-xs"
+          />
+        </div>
 
         {!connectedAddress ? (
-          <button className="primary" onClick={connectMetaMask}>
-            Connect MetaMask
-          </button>
+          <>
+            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full hover:bg-blue-600" onClick={connectMetaMask}>
+              Connect MetaMask
+            </button>
+            {navigator.userAgent.includes("iPhone") && (
+              <button
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg w-full mt-2 hover:bg-gray-600"
+                onClick={() => window.location.href = "https://metamask.app.link/dapp/" + window.location.href}
+              >
+                Open in MetaMask
+              </button>
+            )}
+          </>
         ) : (
           <>
-            <button className="secondary" onClick={disconnectMetaMask}>
+            <p className="text-gray-700 my-2">Connected Address: <span className="font-mono">{connectedAddress}</span></p>
+            <h2 className="text-lg font-semibold">Your USDC Balance</h2>
+            <p className="text-green-600">{balance !== null ? `${balance} USDC` : "Loading..."}</p>
+
+            <input className="border p-2 w-full mt-2" placeholder="Recipient Address" value={recipient} onChange={e => setRecipient(e.target.value)} />
+            <input className="border p-2 w-full mt-2" placeholder="Amount (e.g., 10.0)" value={amount} onChange={e => setAmount(e.target.value)} />
+            <button className="bg-green-500 text-white py-2 px-4 w-full rounded-lg mt-2 hover:bg-green-600" onClick={sendUSDC} disabled={loading}>
+              {loading ? "Sending..." : "Send USDC"}
+            </button>
+
+            <button className="bg-red-500 text-white py-2 px-4 w-full rounded-lg mt-4 hover:bg-red-600" onClick={disconnectMetaMask}>
               Disconnect Wallet
             </button>
-            <div className="p-4 max-w-md text-center">
-              <div className="text-center mb-4">
-                <img
-                  src="https://static.vecteezy.com/system/resources/previews/043/347/347/non_2x/a-cute-dinosaur-cartoon-tyrannosaurus-rex-vector.jpg"
-                  alt="Alfie the T-Rex"
-                  className="w-55 h-50 mx-auto rounded-full"
-                  style={{ width: '550px', height: '500px' }}
-                />
-                <h2 className="text-xl font-bold mt-2">{visibleName}</h2>
-                <p className="text-sm text-gray-600">Your friendly cash guardian!</p>
-              </div>
-
-              <h1 className="text-xl font-bold mb-4">USDC Wallet (Sepolia Testnet)</h1>
-              {message && <p className="text-red-500 mb-2">{message}</p>}
-
-              <p className="mb-4 text-gray-700">Connected Address: <span className="font-mono">{connectedAddress}</span></p>
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-2">Your USDC Balance</h2>
-                {balance !== null ? (
-                  <p className="text-green-600">{balance} USDC</p>
-                ) : (
-                  <p className="text-gray-500">Loading balance...</p>
-                )}
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold mb-2">Send USDC</h2>
-                <input className="border p-2 w-full mb-2" placeholder="Enter Recipient Address" value={recipient} onChange={e => setRecipient(e.target.value)} />
-                <input className="border p-2 w-full mb-2" placeholder="Enter Amount (e.g., 10.0)" value={amount} onChange={e => setAmount(e.target.value)} />
-                <button className="bg-green-500 text-white p-2 w-full hover:bg-green-600" onClick={sendUSDC} disabled={loading}>
-                  {loading ? "Sending..." : "Send USDC"}
-                </button>
-              </div>
-            </div>
           </>
         )}
       </div>
