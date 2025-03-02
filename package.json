@@ -19,7 +19,8 @@
     "hardhat": "^2.22.18"
   },
   "dependencies": {
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "next": "^15.2.0"
   },
   "repository": {
     "type": "git",
