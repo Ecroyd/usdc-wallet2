@@ -15,8 +15,11 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "@types/react": "^19.0.10",
     "ethers": "^6.13.5",
-    "hardhat": "^2.22.18"
+    "hardhat": "^2.22.18",
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
