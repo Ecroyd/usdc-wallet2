@@ -74,6 +74,14 @@ export default function USDCWallet() {
   }
 
   async function connectMetaMask() {
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+    if (isIOS) {
+      // Redirect iOS users to the MetaMask mobile app
+      window.location.href = "https://metamask.app.link/dapp/" + window.location.href;
+      return;
+    }
+
     if (!window.ethereum) {
       alert("MetaMask is not installed. Please install MetaMask and try again.");
       return;
@@ -84,7 +92,7 @@ export default function USDCWallet() {
       
       const provider = new ethers.BrowserProvider(window.ethereum);
       const accounts = await provider.send("eth_requestAccounts", []);
-      
+
       if (!accounts.length) {
         setMessage("No accounts found. Please connect your wallet.");
         return;
